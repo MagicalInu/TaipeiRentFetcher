@@ -39,7 +39,7 @@
      <enum>Qt::LeftToRight</enum>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="welcomePage">
      <attribute name="title">
@@ -91,7 +91,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;此為租屋網站&lt;/span&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;好房網HouseFun&lt;/span&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;的前端程式，用於抓取台北地區的租屋行情資料&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;span style=&quot; font-size:12pt; font-weight:700;&quot;&gt;使用說明&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-size:9pt; font-weight:700;&quot;&gt;1. &lt;/span&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;點選 &amp;quot;租屋行情查詢&amp;quot;&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:9pt; font-weight:700;&quot;&gt;2.&lt;/span&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt; 點選 &amp;quot;上一頁&amp;quot; 與 &amp;quot;下一頁&amp;quot; 切換頁面&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:9pt; font-weight:700;&quot;&gt;3. &lt;/span&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;透過下拉式選單以及搜尋列選擇想要搜尋的條件&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:9pt; font-weight:700;&quot;&gt;3. &lt;/span&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;點選&amp;quot;搜尋條件&amp;quot; 來改變搜尋條件&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:9pt; font-weight:700;&quot;&gt;4.&lt;/span&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt; 按下 &amp;quot;搜尋&amp;quot; 以根據條件進行搜尋&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
      </widget>
@@ -191,11 +191,6 @@ li.checked::marker { content: &quot;\2612&quot;; }
        <bool>false</bool>
       </property>
      </widget>
-    </widget>
-    <widget class="QWidget" name="tab">
-     <attribute name="title">
-      <string>關於</string>
-     </attribute>
     </widget>
    </widget>
   </widget>

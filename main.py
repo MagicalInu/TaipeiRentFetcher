@@ -5,19 +5,20 @@ import sys
 try:
     import pandas as pd
 except ImportError:
-    print('Pandas not installed')
+    print('Pandas not installed!')
     print('Please install all the dependencies of this project by using following command:')
     print('pip install -r requirements.txt')
+    exit()
 
 try:
     from PyQt6 import QtWidgets, uic
     from PyQt6.QtCore import QAbstractTableModel, Qt
 
-
 except ImportError:
     print('PyQt6 not installed!')
     print('Please install all the dependencies of this project by using following command:')
     print('pip install -r requirements.txt')
+    exit()
 
 try:
     from window import Ui_MainWindow as mainWin_UI
@@ -26,8 +27,9 @@ try:
 except ImportError:
     print('File missing!')
     print('Please make sure that you have downloaded the full version of Taipei RentFetcher.')
+    exit()
 
-# Global Search Var
+# Global Var
 lowestPriceVar = 0
 highestPriceVar = 0
 lowestSizeVar = 0
@@ -46,19 +48,29 @@ searchResult = []
 # Import datas
 url = 'https://rent.housefun.com.tw/rentprice/printlist.aspx?sid=144722453'
 print('Loading data from: rent.housefun.com.tw ...')
-dfOrg = pd.read_html(url)
+try:
+    dfOrg = pd.read_html(url)
+except ValueError:
+    print('Internet Error!')
+    print('TaipeiRentFetcher require Internet to function normally.')
+    exit()
+
 print('Loaded! Creating dataframe...')
 
 
 for i in dfOrg:
 
     i.columns = i.iloc[0]
-    i['坪數'] = i['坪數'].str.replace('\D+', '')
-    i['租金'] = i['租金'].str.replace('\D+', '')
+    i['坪數'] = i['坪數'].map(lambda x: x.rstrip('坪'))
+    i['租金'] = i['租金'].map(lambda x: x.rstrip('元').replace(',',''))
 
     i.rename(columns = {'坪數':'坪數 (坪)', '租金':'租金 (元)'}, inplace = True)
-    edited = i[1:]
 
+    edited = i[1:]
+    edited['坪數 (坪)'] = edited['坪數 (坪)'].astype(float)
+    edited['租金 (元)'] = edited['租金 (元)'].astype(int)
+    edited['成交時間'] = pd.to_datetime(edited['成交時間'])
+    edited['成交時間'] = edited['成交時間'].dt.date
     df.append(edited)
 print(f'Dataframe created! Total pages {len(df)}')
 page = 0
@@ -72,7 +84,39 @@ class searchWin(QtWidgets.QMainWindow, searchWin_UI):
         self.setupUi(self)
 
         self.apply.clicked.connect(lambda: self.applyCond())
+        self.reset.clicked.connect(lambda: self.resetCond())
 
+    def resetCond(self):
+        global useLowestSizeVar
+        global useHighestSizeVar
+        global useLowestPriceVar
+        global useHighestPriceVar
+
+        global lowestSizeVar
+        global highestSizeVar
+        global lowestPriceVar
+        global highestPriceVar
+
+        useLowestPriceVar = False
+        useHighestSizeVar = False
+        useLowestPriceVar = False
+        useHighestPriceVar = False
+
+        lowestSizeVar = 0
+        highestSizeVar = 0
+        lowestPriceVar = 0
+        highestPriceVar = 0
+
+        self.lowestSize.setValue(lowestSizeVar)
+        self.highestSize.setValue(highestSizeVar)
+        self.lowestPrice.setValue(lowestPriceVar)
+        self.highestPrice.setValue(highestPriceVar)
+
+        self.useLowestSize.setChecked(useLowestSizeVar)
+        self.useHighestSize.setChecked(useHighestSizeVar)
+        self.useLowestPrice.setChecked(useLowestPriceVar)
+        self.useHighestPrice.setChecked(useHighestPriceVar)
+        
     def applyCond(self):
 
         global useLowestSizeVar
@@ -87,21 +131,32 @@ class searchWin(QtWidgets.QMainWindow, searchWin_UI):
 
         if self.useLowestPrice.isChecked() == True:
             lowestPriceVar = self.lowestPrice.value()
+            print(type(lowestSizeVar))
             useLowestPriceVar = True
 
             print(f'Lowest price set to: {lowestPriceVar}')
+        else:
+            useLowestPriceVar = False
+
 
         if self.useHighestPrice.isChecked() == True:
             highestPriceVar = self.highestPrice.value()
             useHighestPriceVar = True
+        else:
+            useHighestPriceVar = False
 
         if self.useLowestSize.isChecked() == True:
             lowestSizeVar = self.lowestPrice.value()
             useLowestSizeVar == True
+        else:
+            useLowestSizeVar == False
+
 
         if self.useHighestSize.isChecked() == True:
             highestSizeVar = self.highestSize.value()
             useHighestSizeVar == True
+        else:
+            useHighestSizeVar == False
 
     def closeEvent(self, event):
 
@@ -144,6 +199,7 @@ class mainWindow(QtWidgets.QMainWindow, mainWin_UI):
     def __init__(self, *args, obj=None, **kwargs):
 
         global page
+        global df
 
         self.s = None
 
@@ -153,15 +209,15 @@ class mainWindow(QtWidgets.QMainWindow, mainWin_UI):
         self.setupUi(self)
 
         # Connect buttons to functions
+        self.resetButton.clicked.connect(lambda: self.fetchData(df, 0))
         self.nextPageButton.clicked.connect(lambda: self.nextPage())
         self.prevPageButton.clicked.connect(lambda: self.prevPage())
         self.searchConButton.clicked.connect(lambda: self.searchCond())
-        self.searchButton.clicked.connect(lambda: self.searchFunc(page))
+        self.searchButton.clicked.connect(lambda: self.searchFunc())
 
     def fetchData(self, data, pg):
         model = pdModel(data[pg])
         self.tableView.setModel(model)
-
     def nextPage(self):
         global page
         global df
@@ -214,43 +270,37 @@ class mainWindow(QtWidgets.QMainWindow, mainWin_UI):
             self.s.close()
             searchOpen = False
 
-    def searchFunc(self, pg):
+    def searchFunc(self):
         global searchResult
         global df
 
-        temp1 = []
-        temp2 = []
-        temp3 = []
-        temp4 = []
         searchResult = []
 
-        for i in df:
-            if all(item is False for item in [useHighestPriceVar, useLowestPriceVar, useHighestSizeVar, useLowestSizeVar]):
-                continue
-            else:
-                if useLowestPriceVar == True:
-                    i['lowPriceMatch'] = i['租金 (元)'].str.find(lowestPriceVar)
-                    temp1.append(i.query('lowPriceMatch==0'))
-                else:
-                    temp1.append(i)
-                if useHighestPriceVar == True:
-                    temp1['highPriceMatch'] = temp1['租金 (元)'].str.find(highestPriceVar)
-                    temp2.append(temp1.query('highPriceMatch==0'))
-                else:
-                    temp2.append(temp1)
-                if useLowestSizeVar == True:
-                    temp2['lowSizeMatch'] = temp2['坪數 (坪)'].str.find(lowestSizeVar)
-                    temp3.append(temp2.query('highPriceMatch==0'))
-                else:
-                    temp3.append(temp2)
-                if useHighestSizeVar == True:
-                    temp3['highSizeMatch'] = temp3['坪數 (坪)'].str.find(highestSizeVar)
-                    temp4.append(temp3.query('highPriceMatch==0'))
-                else:
-                    temp4.append(temp3)
+        df_comp = pd.concat(df)
 
-            searchResult.append(pd.concat(temp4))
-            print(searchResult)
+
+        if all(item is False for item in [useHighestPriceVar, useLowestPriceVar, useHighestSizeVar, useLowestSizeVar]):
+            searchResult = df
+            pass
+
+        else:
+            if useLowestPriceVar == True:
+                df_comp = df_comp[df_comp['租金 (元)'] >= lowestPriceVar]
+
+            if useHighestPriceVar == True:
+                df_comp = df_comp[df_comp['租金 (元)'] <= highestPriceVar]
+
+            if useLowestSizeVar == True:
+                df_comp = df_comp[df_comp['坪數 (坪)'] >= lowestSizeVar]
+
+            if useHighestSizeVar == True:
+                df_comp = df_comp[df_comp['坪數 (坪)'] <= highestSizeVar]
+
+            searchResult.append(df_comp)
+
+
+        print(df_comp)
+        self.fetchData(searchResult, 0)
 
 # Main function
 if __name__ == '__main__':

@@ -1,4 +1,4 @@
-# Form implementation generated from reading ui file 'searchWin.ui'
+# Form implementation generated from reading ui file './searchWinNew.ui'
 #
 # Created by: PyQt6 UI code generator 6.4.0
 #
@@ -12,9 +12,9 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(403, 440)
-        MainWindow.setMinimumSize(QtCore.QSize(403, 440))
-        MainWindow.setMaximumSize(QtCore.QSize(403, 440))
+        MainWindow.resize(403, 300)
+        MainWindow.setMinimumSize(QtCore.QSize(403, 300))
+        MainWindow.setMaximumSize(QtCore.QSize(403, 300))
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.label = QtWidgets.QLabel(self.centralwidget)
@@ -57,32 +57,11 @@ class Ui_MainWindow(object):
         self.useHighestSize = QtWidgets.QCheckBox(self.centralwidget)
         self.useHighestSize.setGeometry(QtCore.QRect(281, 198, 101, 24))
         self.useHighestSize.setObjectName("useHighestSize")
-        self.label_5 = QtWidgets.QLabel(self.centralwidget)
-        self.label_5.setGeometry(QtCore.QRect(20, 260, 61, 18))
-        self.label_5.setObjectName("label_5")
-        self.cond1 = QtWidgets.QComboBox(self.centralwidget)
-        self.cond1.setGeometry(QtCore.QRect(20, 280, 79, 26))
-        self.cond1.setObjectName("cond1")
-        self.lineEdit = QtWidgets.QLineEdit(self.centralwidget)
-        self.lineEdit.setGeometry(QtCore.QRect(110, 280, 271, 26))
-        self.lineEdit.setObjectName("lineEdit")
-        self.lineEdit_2 = QtWidgets.QLineEdit(self.centralwidget)
-        self.lineEdit_2.setGeometry(QtCore.QRect(110, 320, 271, 26))
-        self.lineEdit_2.setObjectName("lineEdit_2")
-        self.cond2 = QtWidgets.QComboBox(self.centralwidget)
-        self.cond2.setGeometry(QtCore.QRect(20, 320, 79, 26))
-        self.cond2.setObjectName("cond2")
-        self.cond3 = QtWidgets.QComboBox(self.centralwidget)
-        self.cond3.setGeometry(QtCore.QRect(20, 360, 79, 26))
-        self.cond3.setObjectName("cond3")
-        self.lineEdit_3 = QtWidgets.QLineEdit(self.centralwidget)
-        self.lineEdit_3.setGeometry(QtCore.QRect(110, 360, 271, 26))
-        self.lineEdit_3.setObjectName("lineEdit_3")
         self.apply = QtWidgets.QPushButton(self.centralwidget)
-        self.apply.setGeometry(QtCore.QRect(300, 400, 80, 26))
+        self.apply.setGeometry(QtCore.QRect(300, 260, 80, 26))
         self.apply.setObjectName("apply")
         self.reset = QtWidgets.QPushButton(self.centralwidget)
-        self.reset.setGeometry(QtCore.QRect(20, 400, 80, 26))
+        self.reset.setGeometry(QtCore.QRect(20, 260, 80, 26))
         self.reset.setObjectName("reset")
         MainWindow.setCentralWidget(self.centralwidget)
 
@@ -100,6 +79,5 @@ class Ui_MainWindow(object):
         self.useLowestSize.setText(_translate("MainWindow", "使用最低坪數"))
         self.label_4.setText(_translate("MainWindow", "最高坪數"))
         self.useHighestSize.setText(_translate("MainWindow", "使用最高坪數"))
-        self.label_5.setText(_translate("MainWindow", "其他條件:"))
         self.apply.setText(_translate("MainWindow", "確認"))
         self.reset.setText(_translate("MainWindow", "重置"))

@@ -1,4 +1,4 @@
-# Form implementation generated from reading ui file 'window.ui'
+# Form implementation generated from reading ui file './window.ui'
 #
 # Created by: PyQt6 UI code generator 6.4.0
 #
@@ -59,13 +59,10 @@ class Ui_MainWindow(object):
         self.searchConButton.setCheckable(False)
         self.searchConButton.setObjectName("searchConButton")
         self.tabWidget.addTab(self.DataFetcher, "")
-        self.tab = QtWidgets.QWidget()
-        self.tab.setObjectName("tab")
-        self.tabWidget.addTab(self.tab, "")
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
-        self.tabWidget.setCurrentIndex(1)
+        self.tabWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -87,7 +84,7 @@ class Ui_MainWindow(object):
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">此為租屋網站</span><span style=\" font-weight:700;\">好房網HouseFun</span><span style=\" font-size:9pt;\">的前端程式，用於抓取台北地區的租屋行情資料</span></p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /><span style=\" font-size:12pt; font-weight:700;\">使用說明<br /></span><span style=\" font-size:9pt; font-weight:700;\">1. </span><span style=\" font-size:9pt;\">點選 &quot;租屋行情查詢&quot;</span></p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt; font-weight:700;\">2.</span><span style=\" font-size:9pt;\"> 點選 &quot;上一頁&quot; 與 &quot;下一頁&quot; 切換頁面</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt; font-weight:700;\">3. </span><span style=\" font-size:9pt;\">透過下拉式選單以及搜尋列選擇想要搜尋的條件</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt; font-weight:700;\">3. </span><span style=\" font-size:9pt;\">點選&quot;搜尋條件&quot; 來改變搜尋條件</span></p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt; font-weight:700;\">4.</span><span style=\" font-size:9pt;\"> 按下 &quot;搜尋&quot; 以根據條件進行搜尋</span></p></body></html>"))
         self.label_2.setText(_translate("MainWindow", "Version 1.0.0-rc1"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.welcomePage), _translate("MainWindow", "歡迎!"))
@@ -97,4 +94,3 @@ class Ui_MainWindow(object):
         self.searchButton.setText(_translate("MainWindow", "搜尋"))
         self.searchConButton.setText(_translate("MainWindow", "搜尋條件"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.DataFetcher), _translate("MainWindow", "租屋行情查詢"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("MainWindow", "關於"))
