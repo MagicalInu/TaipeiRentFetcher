@@ -45,35 +45,41 @@ searchOpen = False
 df = []
 searchResult = []
 
-# Import datas
-url = 'https://rent.housefun.com.tw/rentprice/printlist.aspx?sid=144722453'
-print('Loading data from: rent.housefun.com.tw ...')
-try:
-    dfOrg = pd.read_html(url)
-except ValueError:
-    print('Internet Error!')
-    print('TaipeiRentFetcher require Internet to function normally.')
-    exit()
+def initDataframe():
 
-print('Loaded! Creating dataframe...')
+    global df
+
+    dfOrg = None
+
+    # Import datas
+    url = 'https://rent.housefun.com.tw/rentprice/printlist.aspx?sid=144722453'
+    print('Loading data from: rent.housefun.com.tw ...')
+    try:
+        dfOrg = pd.read_html(url)
+    except ValueError:
+        print('Internet Error!')
+        print('TaipeiRentFetcher require Internet to function normally.')
+        exit()
+
+        print('Loaded! Creating dataframe...')
 
 
-for i in dfOrg:
+    for i in dfOrg:
 
-    i.columns = i.iloc[0]
-    i['坪數'] = i['坪數'].map(lambda x: x.rstrip('坪'))
-    i['租金'] = i['租金'].map(lambda x: x.rstrip('元').replace(',',''))
+        i.columns = i.iloc[0]
+        i['坪數'] = i['坪數'].map(lambda x: x.rstrip('坪'))
+        i['租金'] = i['租金'].map(lambda x: x.rstrip('元').replace(',',''))
 
-    i.rename(columns = {'坪數':'坪數 (坪)', '租金':'租金 (元)'}, inplace = True)
+        i.rename(columns = {'坪數':'坪數 (坪)', '租金':'租金 (元)'}, inplace = True)
 
-    edited = i[1:]
-    edited['坪數 (坪)'] = edited['坪數 (坪)'].astype(float)
-    edited['租金 (元)'] = edited['租金 (元)'].astype(int)
-    edited['成交時間'] = pd.to_datetime(edited['成交時間'])
-    edited['成交時間'] = edited['成交時間'].dt.date
-    df.append(edited)
-print(f'Dataframe created! Total pages {len(df)}')
-page = 0
+        edited = i[1:]
+        edited['坪數 (坪)'] = edited['坪數 (坪)'].astype(float)
+        edited['租金 (元)'] = edited['租金 (元)'].astype(int)
+        edited['成交時間'] = pd.to_datetime(edited['成交時間'])
+        edited['成交時間'] = edited['成交時間'].dt.date
+        df.append(edited)
+    print(f'Dataframe created! Total pages {len(df)}')
+    page = 0
 
 class searchWin(QtWidgets.QMainWindow, searchWin_UI):
     def __init__(self, *args, obj=None, **kwargs):
@@ -116,7 +122,7 @@ class searchWin(QtWidgets.QMainWindow, searchWin_UI):
         self.useHighestSize.setChecked(useHighestSizeVar)
         self.useLowestPrice.setChecked(useLowestPriceVar)
         self.useHighestPrice.setChecked(useHighestPriceVar)
-        
+
     def applyCond(self):
 
         global useLowestSizeVar
@@ -302,8 +308,9 @@ class mainWindow(QtWidgets.QMainWindow, mainWin_UI):
         print(df_comp)
         self.fetchData(searchResult, 0)
 
-# Main function
-if __name__ == '__main__':
+def main():
+    initDataframe()
+
     app = QtWidgets.QApplication(sys.argv)
     window = mainWindow()
 
@@ -313,3 +320,7 @@ if __name__ == '__main__':
     window.fetchData(df, 0)
 
     sys.exit(app.exec())
+
+# Main function
+if __name__ == '__main__':
+    main()
